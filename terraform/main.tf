@@ -13,29 +13,29 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "k3s" {
-  name     = "k3s"
+resource "azurerm_resource_group" "kube" {
+  name     = "kube"
   location = "eastus"
 }
 
-resource "azurerm_virtual_network" "k3s-galenguyer-vnet" {
- name                = "k3s-galenguyer-vnet"
+resource "azurerm_virtual_network" "kube-galenguyer-vnet" {
+ name                = "kube-galenguyer-vnet"
  address_space       = ["10.0.0.0/16"]
  location            = "eastus"
- resource_group_name = azurerm_resource_group.k3s.name
+ resource_group_name = azurerm_resource_group.kube.name
 }
 
-resource "azurerm_subnet" "k3s-galenguyer-subnet" {
- name                 = "k3s-galenguyer-subnet"
- resource_group_name  = azurerm_resource_group.k3s.name
- virtual_network_name = azurerm_virtual_network.k3s-galenguyer-vnet.name
+resource "azurerm_subnet" "kube-galenguyer-subnet" {
+ name                 = "kube-galenguyer-subnet"
+ resource_group_name  = azurerm_resource_group.kube.name
+ virtual_network_name = azurerm_virtual_network.kube-galenguyer-vnet.name
  address_prefixes       = ["10.0.3.0/24"]
 }
 
-resource "azurerm_network_security_group" "k3s-galenguyer-nsg" {
-    name                = "k3s-galenguyer-nsg"
+resource "azurerm_network_security_group" "kube-galenguyer-nsg" {
+    name                = "kube-galenguyer-nsg"
     location            = "eastus"
-    resource_group_name = azurerm_resource_group.k3s.name
+    resource_group_name = azurerm_resource_group.kube.name
 
     security_rule {
         name                       = "SSH"
