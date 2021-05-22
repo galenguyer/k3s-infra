@@ -1,0 +1,33 @@
+---
+- name: update authorized_keys
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: update authorized_keys for chef
+    ansible.posix.authorized_key:
+      user: chef
+      state: present
+      key: https://ssh.galenguyer.com
+      exclusive: True
+
+  - name: update authorized_keys for root
+    ansible.posix.authorized_key:
+      user: root
+      state: present
+      key: https://ssh.galenguyer.com
+      exclusive: True
+
+  - name: Add user account for erin
+    ansible.builtin.user:
+      name: erin
+      shell: /bin/bash
+      groups: sudo
+      append: yes
+
+  - name: update authorized_keys for erin
+    ansible.posix.authorized_key:
+      user: erin
+      state: present
+      key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMVk9i7FG7dc9r4ixwAJT7uPLH3UuqbwIgeZ7Ytmnpvv erin
+      exclusive: True

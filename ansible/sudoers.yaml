@@ -1,0 +1,9 @@
+---
+- name: set sudoers file correctly
+  hosts: all
+  become: yes
+  roles:
+    - role: sudoers
+  vars:
+    sudoers_groups_no_password:
+      - sudo
