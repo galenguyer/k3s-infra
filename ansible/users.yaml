@@ -31,3 +31,17 @@
       state: present
       key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMVk9i7FG7dc9r4ixwAJT7uPLH3UuqbwIgeZ7Ytmnpvv erin
       exclusive: True
+
+  - name: Add user account for ada
+    ansible.builtin.user:
+      name: ada
+      shell: /bin/bash
+      groups: sudo
+      append: yes
+
+  - name: update authorized_keys for ada
+    ansible.posix.authorized_key:
+      user: ada
+      state: present
+      key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYHHleHGSvRxHgIjB0LKsoxgdm9ykhILbblozLR1Ewd0KlBlpBf0wrJu/aZf4h7GrwYpTMRiiFRSr8zA0LwUbhY2CyAboL46lg0mdcB5lNvrzatiepUTrWRtQla5KEoF8o8rEnRaukdsnBRBBZalQC73cKpy7OkWXuOAnnuW97QJh5/euEEbK3p1oi7pvnHtdNdbNOThZP/AvQTXY64vAqTTe8y1Pltp3vEjsP0z5JWZ8znQjybkP1eFaQczeN165dGvYHUtl+avAHhuMK9z1K1KrJXAGOTaTMUZpJ8yVRZ09mT430s5juiw749C769LwNYQhzuMSvw+gsW1schdkx ada@Exidia
+      exclusive: True
