@@ -140,7 +140,7 @@ resource "azurerm_network_security_group" "kube-galenguyer-nsg" {
         destination_address_prefix = "*"
     }
     security_rule {
-        name                       = "kube-controller-manager"
+        name                       = "NodePort Services"
         priority                   = 1111
         direction                  = "Inbound"
         access                     = "Allow"
