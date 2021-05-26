@@ -95,7 +95,7 @@ resource "azurerm_network_security_group" "kube-galenguyer-nsg" {
         destination_address_prefix = "*"
     }
     security_rule {
-        name                       = "kubelet API"
+        name                       = "kubelet API controller"
         priority                   = 1102
         direction                  = "Inbound"
         access                     = "Allow"
@@ -124,6 +124,29 @@ resource "azurerm_network_security_group" "kube-galenguyer-nsg" {
         protocol                   = "Tcp"
         source_port_range          = "*"
         destination_port_range     = "10252"
+        source_address_prefix      = "10.0.8.0/24"
+        destination_address_prefix = "*"
+    }
+    # worker node stuff
+    security_rule {
+        name                       = "kubelet API worker"
+        priority                   = 1110
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "10250"
+        source_address_prefix      = "10.0.8.0/24"
+        destination_address_prefix = "*"
+    }
+    security_rule {
+        name                       = "kube-controller-manager"
+        priority                   = 1111
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "30000-32767"
         source_address_prefix      = "10.0.8.0/24"
         destination_address_prefix = "*"
     }
