@@ -37,6 +37,7 @@ resource "azurerm_network_security_group" "kube-galenguyer-nsg" {
     location            = "eastus"
     resource_group_name = azurerm_resource_group.kube.name
 
+    # normal stuff
     security_rule {
         name                       = "SSH"
         priority                   = 1001
@@ -68,6 +69,62 @@ resource "azurerm_network_security_group" "kube-galenguyer-nsg" {
         source_port_range          = "*"
         destination_port_range     = "443"
         source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+    # control plane
+    security_rule {
+        name                       = "Kube API Server"
+        priority                   = 1100
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "6443"
+        source_address_prefix      = "10.0.8.0/24"
+        destination_address_prefix = "*"
+    }
+    security_rule {
+        name                       = "etcd server client API"
+        priority                   = 1101
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "2379-2380"
+        source_address_prefix      = "10.0.8.0/24"
+        destination_address_prefix = "*"
+    }
+    security_rule {
+        name                       = "kubelet API"
+        priority                   = 1102
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "10250"
+        source_address_prefix      = "10.0.8.0/24"
+        destination_address_prefix = "*"
+    }
+    security_rule {
+        name                       = "kube-scheduler"
+        priority                   = 1103
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "10251"
+        source_address_prefix      = "10.0.8.0/24"
+        destination_address_prefix = "*"
+    }
+    security_rule {
+        name                       = "kube-controller-manager"
+        priority                   = 1104
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "10252"
+        source_address_prefix      = "10.0.8.0/24"
         destination_address_prefix = "*"
     }
 }
