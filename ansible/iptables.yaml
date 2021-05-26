@@ -1,0 +1,27 @@
+---
+- name: load kernel modules and set sysctl for iptables
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: set up modules-load.d
+    ansible.builtin.copy:
+      content: "br_netfilter\n"
+      dest: /etc/modules-load.d/k8s.conf
+    notify: modprobe br_netfilter
+
+  - name: Flush handlers
+    meta: flush_handlers
+
+  - name: Pass bridged IPv4 traffic to iptables' chains
+    sysctl:
+      name: net.bridge.bridge-nf-call-iptables
+      value: '1'
+      state: present
+
+  handlers:
+  - name: modprobe br_netfilter
+    community.general.modprobe:
+      name: br_netfilter
+      state: present
+
