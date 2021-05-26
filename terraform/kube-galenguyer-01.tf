@@ -29,7 +29,7 @@ resource "azurerm_linux_virtual_machine" "kube-galenguyer-01" {
     location              = "eastus"
     resource_group_name   = azurerm_resource_group.kube.name
     network_interface_ids = [azurerm_network_interface.kube-galenguyer-01-nic.id]
-    size                  = "Standard_B1s"
+    size                  = "Standard_B2s"
 
     os_disk {
         name                 = "kube-galenguyer-01-osdisk"
