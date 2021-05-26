@@ -1,0 +1,19 @@
+---
+- name: move key to all nodes for passwordless ssh between nodes
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: update authorized_keys for root
+    ansible.posix.authorized_key:
+      user: root
+      state: present
+      key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKXNXhkmNwY9k/y7TWqvSfP2RM4FO/oKi4lRl0Hcaunb root@stonewall
+
+  - name: copy ssh private key for root
+    ansible.builtin.copy:
+      src: ~/.ssh/id_kube
+      dest: /root/.ssh/id_ed25519
+      owner: root
+      group: root
+      mode: '0600'
